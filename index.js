@@ -7,6 +7,7 @@ const server = express();
 
 // middleware
 server.use(express.json());
+server.use(cors());
 
 // endpoints
 
