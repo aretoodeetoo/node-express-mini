@@ -71,8 +71,8 @@ server.delete('/api/users/:id', (req, res) => {
             }
             res.status(204).end();
         })
-        .catch(({ code, message }) => {
-            res.status(code).json({ success: false, message });
+        .catch(err => {
+            res.status(500).json({ message: 'The user could not be removed' });
         });
 });
 
@@ -80,6 +80,9 @@ server.delete('/api/users/:id', (req, res) => {
 server.put('/api/users/:id', (req, res) => {
     const { id } = req.params;
     const changes = req.body;
+    if (!changes.name || !changes.bio){
+        res.status(400).json({ success: false, message: 'Please provide name and bio for the user'});
+    }
 
     db
         .update(id, changes)
@@ -93,8 +96,8 @@ server.put('/api/users/:id', (req, res) => {
                 });
             }
         })
-        .catch(({ code, message }) => {
-            res.status(code).json({ success: false, message });
+        .catch(err => {
+            res.status(500).json({ message: 'The user information could not be modified' });
         });
 });
 
