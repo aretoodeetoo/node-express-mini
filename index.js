@@ -47,13 +47,16 @@ server.post('/api/users', (req, res) => {
 // GET: returns user object with specified ID
 server.get('/api/users/:id', (req, res) => {
     const { id } = req.params;
+    if (!id){
+        res.status(404).json({ success: false, message: 'The user with the specified ID does not exist'});
+    }
     db
         .findById(id)
         .then(user => {
             res.status(200).json({ success: true, user });
         })
         .catch(err => {
-            res.status(err.code).json({ success: false, message: err.message });
+            res.status(500).json({ success: false, message: 'The user information could not be retrieved' });
         });
 });
 
