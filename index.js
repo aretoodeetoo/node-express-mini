@@ -39,8 +39,8 @@ server.post('/api/users', (req, res) => {
         .then(user => {
             res.status(201).json({ success: true, user });
         })
-        .catch(({ code, message }) => {
-            res.status(code).json({ success: false, message });
+        .catch(err => {
+            res.status(500).json({ success: false, message: 'There was an error while saving the user to the database.'});
         });
 });
 
