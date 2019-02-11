@@ -31,7 +31,9 @@ server.get('/api/users', (req, res) => {
 // POST: creates user using info sent inside request body
 server.post('/api/users', (req, res) => {
     const user = req.body;
-    console.log('user', user);
+    if (!user.name || !user.bio){
+        res.status(400).json({ success: false, message: 'You need to have both a name and bio to input a new user'});
+    }
     db
         .insert(user)
         .then(user => {
