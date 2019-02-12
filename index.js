@@ -1,5 +1,6 @@
 // implement your API here //
 const express = require('express');
+const cors = require('cors');
 
 const db = require('./data/db.js');
 
@@ -10,7 +11,6 @@ server.use(express.json());
 server.use(cors());
 
 // endpoints
-
 // Initial endpoint to make sure code works
 server.get('/', (req, res) => {
     res.send('<h2>Hello, I work!</h2>');
@@ -22,10 +22,10 @@ server.get('/api/users', (req, res) => {
     db
         .find()
         .then(users => {
-            res.status(200).json({ success: true, users });
+            res.status(200).json(users);
         })
         .catch(err => {
-            res.status(500).json({ success: false, message: 'The information about the users could not be retrieved' });
+            res.status(500).json({ message: 'The information about the users could not be retrieved' });
         });
 });
 
@@ -33,15 +33,15 @@ server.get('/api/users', (req, res) => {
 server.post('/api/users', (req, res) => {
     const user = req.body;
     if (!user.name || !user.bio){
-        res.status(400).json({ success: false, message: 'You need to have both a name and bio to input a new user'});
+        res.status(400).json({ message: 'You need to have both a name and bio to input a new user'});
     }
     db
         .insert(user)
         .then(user => {
-            res.status(201).json({ success: true, user });
+            res.status(201).json(user);
         })
         .catch(err => {
-            res.status(500).json({ success: false, message: 'There was an error while saving the user to the database.'});
+            res.status(500).json({ message: 'There was an error while saving the user to the database.'});
         });
 });
 
@@ -54,10 +54,10 @@ server.get('/api/users/:id', (req, res) => {
             if (!user){
                 res.status(404).json({ message: 'The user with the specified ID does not exist'});
             }
-            res.status(200).json({ success: true, user });
+            res.status(200).json(user);
         })
         .catch(err => {
-            res.status(500).json({ success: false, message: 'The user information could not be retrieved' });
+            res.status(500).json({ message: 'The user information could not be retrieved' });
         });
 });
 
